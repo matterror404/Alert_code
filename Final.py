@@ -72,8 +72,8 @@ if not cap.isOpened():
     exit()
 
 # Set up UDP for reveiving pitch angle
-UDP_IP = "192.168.137.1" # Insert UDP IP address
-UDP_PORT = 9876 # Insert UDP port selected 
+UDP_IP = "xx.xx.xx.xx" # Insert UDP IP address
+UDP_PORT = xxxx # Insert UDP port selected 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((UDP_IP, UDP_PORT))
 sock.setblocking(True)
@@ -291,3 +291,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
