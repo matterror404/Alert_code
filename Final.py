@@ -61,6 +61,8 @@ track_history = {}
 t0 = time.time()
 # Initialize alert status
 alert_working = False
+# Set alert trigger time in seconds
+alert_trigger_time = 1.5  
 
 if not cap.isOpened():
     print("Error: Could not open video source")
@@ -176,7 +178,7 @@ while True:
                     alert_working = False
 
                 if D_y <= 17:
-                    if hit_t > 0 and hit_t < 2 and v_rel < 5: #triger alert
+                    if hit_t > 0 and hit_t < alert_trigger_time and v_rel < 5: #triger alert
                         color = (0, 0, 255)
                         alert_working = True
                     else:
