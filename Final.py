@@ -178,7 +178,7 @@ while True:
                     alert_working = False
 
                 if D_y <= 17:
-                    if hit_t > 0 and hit_t < alert_trigger_time and v_rel < 5: #triger alert
+                    if hit_t > 0 and hit_t < alert_trigger_time and v_rel < 5 and D_y <= 15: #triger alert
                         color = (0, 0, 255)
                         alert_working = True
                     else:
