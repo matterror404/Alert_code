@@ -254,29 +254,6 @@ while True:
         cv2.putText(img_with_boxes, angle_text, (x_pos, y_pos), font, font_scale, color, thickness)
         cv2.putText(img_with_boxes, h, (x_pos, y_pos + 30), font, font_scale, color, thickness)
 
-        # Calculate elapsed time and display it
-        elapsed = int(time.time() - t0)     
-        mins, secs = divmod(elapsed, 60)  
-        start_time = f"{mins:02d}:{secs:02d}"
-
-        time_shown = f"{start_time}"
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 0.7
-        thickness = 2
-        (text_w, text_h), _ = cv2.getTextSize(time_shown, font, font_scale, thickness)
-        x_pos = img_with_boxes.shape[1] - text_w - 10 
-        y_pos = text_h + 10
-
-        cv2.putText(
-            img_with_boxes,
-            time_shown,
-            (x_pos, y_pos),
-            font,
-            font_scale,
-            (255, 255, 255),
-            thickness,
-            cv2.LINE_AA
-        )
         # Show the processed frame in a window
         cv2.imshow('Object Detection', img_with_boxes)
 
