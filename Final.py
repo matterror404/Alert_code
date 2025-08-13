@@ -50,9 +50,9 @@ y_matrix = np.array([
 
 
 # Open video capture
-cap = cv2.VideoCapture(2) 
+cap = cv2.VideoCapture(4) 
 # Insert camera height
-camera_height = 0.9
+camera_height = 0.7
 # Insert focal length in mm
 focal_length = 23
 # Initialize track history for speed calculation
@@ -64,7 +64,7 @@ t0 = time.time()
 # Initialize alert status
 alert_working = False
 # Set alert trigger time in seconds
-alert_trigger_time = 1.5
+alert_trigger_time = 1.4
 
 if not cap.isOpened():
     print("Error: Could not open video source")
