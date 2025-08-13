@@ -62,7 +62,7 @@ t0 = time.time()
 # Initialize alert status
 alert_working = False
 # Set alert trigger time in seconds
-alert_trigger_time = 1.5  
+alert_trigger_time = 1.2  
 
 if not cap.isOpened():
     print("Error: Could not open video source")
@@ -77,11 +77,11 @@ sock.setblocking(True)
 
 # # Receive pitch angle via UDP
 def udp_listener():
-    global pitch_angle
+    global pitch
     while True:
         data, _ = sock.recvfrom(1024)
         try:
-            pitch_angle = float(data.decode())
+            pitch = float(data.decode())
         except ValueError:
             continue
 # Start UDP listener in a separate thread to reduce delay
@@ -101,6 +101,7 @@ while True:
 
         
         for result in results:
+            pitch_angle = pitch # Safe the pitch angle of the next frame
             img_with_boxes = result.orig_img.copy()
             for box in result.boxes:
                 # Extract bounding box coordinates and class information
@@ -178,7 +179,7 @@ while True:
                     alert_working = False
 
                 if D_y <= 17:
-                    if hit_t > 0 and hit_t < alert_trigger_time and D_y >= 2.3 and D_y <= 15: #triger alert
+                    if hit_t > 0 and hit_t < alert_trigger_time and D_y > 2.5 and D_y <= 12: #triger alert
                         color = (0, 0, 255)
                         alert_working = True
                     else:
