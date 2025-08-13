@@ -57,12 +57,14 @@ camera_height = 0.9
 focal_length = 23
 # Initialize track history for speed calculation
 track_history = {}
+speed_history = {} 
+history_len = 5
 # Initialize clock
 t0 = time.time()
 # Initialize alert status
 alert_working = False
 # Set alert trigger time in seconds
-alert_trigger_time = 1.2  
+alert_trigger_time = 1.5
 
 if not cap.isOpened():
     print("Error: Could not open video source")
@@ -158,9 +160,16 @@ while True:
                             d_a = np.array([dX, dY])
                             d_r_unit = np.array([X_prev, Y_prev]) / -np.linalg.norm([X_prev, Y_prev])
                             v_rel = np.dot(d_a, d_r_unit)  / dt  # Relative velocity
-                            hit_t = real_dis / v_rel # Predicted time to hit
-                            speed = v_rel
-
+                            
+                            if track_id not in speed_history:
+                                speed_history[track_id] = []
+                            speed_history[track_id].append(v_rel)
+                            
+                            if len(speed_history[track_id]) > history_len:
+                                speed_history[track_id].pop(0)
+                            speed = sum(speed_history[track_id]) / len(speed_history[track_id]) # Smooth speed by averaging 5 frame 
+                            hit_t = real_dis / speed # Predicted time to hit
+                    
                     # Update track history
                     track_history[track_id] = (now, X, Y)
 
