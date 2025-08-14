@@ -121,6 +121,8 @@ while True:
                 # Convert focallength of other camera to 23 mm (for 4:3 aspect ratio only)
                 y_nor = (y_nor - 0.5) * (focal_length / 23) + 0.5
                 x_nor = (x_nor - 0.5) * (focal_length / 23) + 0.5
+                if x_nor < 0.15 or x_nor > 0.85:
+                    continue # Ignore objects if too far left or right, prevent the false x_nor value
                 # Angle calibration
                 if pitch_angle > 80 and pitch_angle <= 90:
                     dy = (0.0225 * y_nor * y_nor - 0.0258 * y_nor + 0.0229) * (pitch_angle - 90)
