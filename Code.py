@@ -19,11 +19,14 @@ def find_d(y_in, h_in, h_arr, d_arr, y_arr):
     y = np.asarray(y_arr)
     spline = RectBivariateSpline(h, d, y, kx=2, ky=2) #Convert to spline functions
 
-    def equation(d_val):
-        return float(spline(h_in, d_val) - y_in) # Define function: F(h0,d0) = y_in 
+    def equation(d_unknown):
+        return float(spline(h_in, d_unknown) - y_in) # Define function: F(h0,d0) = y_in 
     
-    d = root_scalar(equation, bracket=[2, 17], method='brentq') # Find d using Brent's method
-    return float(d.root)  # Output distance 
+    try:
+        d = root_scalar(equation, bracket=[2, 17], method='brentq')# Find d using Brent's method
+        return float(d.root)  # Output distance 
+    except ValueError:
+        return float('nan') 
 
 
 # Distance setup for interpolation
@@ -41,7 +44,7 @@ y_cali = np.array([
 
 
 # Open video capture
-cap = cv2.VideoCapture(2) 
+cap = cv2.VideoCapture(4) 
 # Insert camera height
 camera_height = 0.65
 # Insert focal length in mm
@@ -163,8 +166,8 @@ while True:
                 # Extract bounding box coordinates and class information
                 x1, y1, x2, y2 = box.xyxy[0].tolist()
                 conf = box.conf.item()
-                cls_id = int(box.cls.item())
-                class_name = model.names[cls_id]
+                class_id = int(box.cls.item())
+                class_name = model.names[class_id]
                 # Only process 'person' class
                 if class_name != 'person':
                     continue
