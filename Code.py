@@ -59,6 +59,8 @@ t0 = time.time()
 alert_working = False
 # Set alert trigger time in seconds
 alert_trigger_time = 1
+# Define font for text display
+font = cv2.FONT_HERSHEY_SIMPLEX
 
 if not cap.isOpened():
     print("Error: Could not open video source")
@@ -145,6 +147,7 @@ server = UDPServer(address=("192.168.137.1", 9876))# Insert UDP IP address. Inse
 server.setDataCallBack(onData)
 server.start()
 server_running = True
+
 
 # Main
 # Process video frames
@@ -268,41 +271,20 @@ while True:
                 cv2.rectangle(out_frame, (int(x1), int(y1)), (int(x2), int(y2)), color, 2)
 
                 # Draw bounding box label
-                font = cv2.FONT_HERSHEY_SIMPLEX
-                font_scale = 0.7
-                thickness = 2
-                text_size = cv2.getTextSize(label, font, font_scale, thickness)[0]
-                cv2.rectangle(
-                    out_frame,
-                    (int(x1), int(y1) - text_size[1] - 5),
-                    (int(x1) + text_size[0], int(y1) - 5),
-                    color, -1
-                )
-                cv2.putText(
-                    out_frame, label,
-                    (int(x1), int(y1) - 5),
-                    font, font_scale, (0, 0, 0), thickness
-                )
+                text_size = cv2.getTextSize(label, font, 0.7, 2)[0]
+                cv2.rectangle(out_frame, (int(x1), int(y1) - text_size[1] - 5), (int(x1) + text_size[0], int(y1) - 5), color, -1)
+                cv2.putText(out_frame, label, (int(x1), int(y1) - 5), font, 0.7, (0, 0, 0), 2)
 
         # alert
         if alert_working:
             alert_text = "Warning"
-            font = cv2.FONT_HERSHEY_SIMPLEX
-            font_scale = 0.8
-            thickness = 2
-            color = (0, 0, 255)
-            text_size = cv2.getTextSize(alert_text, font, font_scale, thickness)[0]
+            text_size = cv2.getTextSize(alert_text, font, 0.8, 2)[0]
 
             x_pos = out_frame.shape[1] - text_size[0] - 10
             y_pos = out_frame.shape[0] - 10
 
-            cv2.rectangle(out_frame,
-                          (x_pos - 5, y_pos - text_size[1] - 5),
-                          (x_pos + text_size[0] + 5, y_pos + 5),
-                          (255, 255, 255), -1)
-
-            cv2.putText(out_frame, alert_text, (x_pos, y_pos),
-                        font, font_scale, color, thickness)
+            cv2.rectangle(out_frame, (x_pos - 5, y_pos - text_size[1] - 5), (x_pos + text_size[0] + 5, y_pos + 5), (255, 255, 255), -1)         
+            cv2.putText(out_frame, alert_text, (x_pos, y_pos), font, 0.8, (0, 0, 255), 2)
 
         # Display angle text
         if abs(pitch_angle) > 100 or abs(pitch_angle) < 80:
@@ -312,15 +294,9 @@ while True:
             angle_text = f"Angle= {pitch_angle:.1f}"
             angle_in_range = True
         h = f"h={camera_height:.2f}m"
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 0.7
-        thickness = 2
-        color = (127, 255, 0)
-        x_pos = 5
-        y_pos = 25
 
-        cv2.putText(out_frame, angle_text, (x_pos, y_pos), font, font_scale, color, thickness)
-        cv2.putText(out_frame, h, (x_pos, y_pos + 30), font, font_scale, color, thickness)
+        cv2.putText(out_frame, angle_text, (5, 25), font, 0.7, (127, 255, 0), 2)
+        cv2.putText(out_frame, h, (5, 55), font, 0.7, (127, 255, 0), 2)
 
         # Show the processed frame in a window
         cv2.imshow('Object Detection', out_frame)
