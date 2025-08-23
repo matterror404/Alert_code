@@ -62,9 +62,6 @@ alert_trigger_time = 1
 # Define font for text display
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-if not cap.isOpened():
-    print("Error: Could not open video source")
-    exit()
 # Using the code in https://github.com/umer0586/SensaGram 
 import json
 import socket
@@ -154,10 +151,6 @@ server_running = True
 while True:
     try:
         ret, frame = cap.read()
-        if not ret:
-            print("Error: Failed to capture frame")
-            break
-
         ysize, xsize = frame.shape[:2]
         results = model.track(frame, persist=True)
 
