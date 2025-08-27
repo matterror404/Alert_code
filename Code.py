@@ -9,8 +9,8 @@ import time
 import math
 
 
-# Initialize YOLO11n model
-model = YOLO('Yolo/yolo11n.pt')
+# Insert address of yolo model
+model = YOLO('Address_of_model')
 
 # Interpolation function
 def find_d(y_in, h_in, h_arr, d_arr, y_arr):
